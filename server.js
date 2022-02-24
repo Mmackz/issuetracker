@@ -24,21 +24,23 @@ db(async (client) => {
    const myDB = await client.db("issuetracker").collection("issues");
    //Routing for API
    apiRoutes(app, myDB);
-});
 
-//Sample front-end
-app.route("/:project/").get(function (req, res) {
-   res.sendFile(path.join(__dirname, "/views/issue.html"));
-});
+   //Sample front-end
+   app.route("/:project/").get(function (req, res) {
+      res.sendFile(path.join(__dirname, "/views/issue.html"));
+   });
 
-//Index page (static HTML)
-app.route("/").get(function (req, res) {
-   res.sendFile(path.join(__dirname, "/views/index.html"));
-});
+   //Index page (static HTML)
+   app.route("/").get(function (req, res) {
+      res.sendFile(path.join(__dirname, "/views/index.html"));
+   });
 
-//404 Not Found Middleware
-app.use(function (req, res, next) {
-   res.status(404).type("text").send("Not Found");
+   //404 Not Found Middleware
+   app.use(function (req, res, next) {
+      res.status(404).type("text").send("Not Found");
+   });
+}).catch(err => {
+   console.log(err,"HI")
 });
 
 //Start our server and tests!
