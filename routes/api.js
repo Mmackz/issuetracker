@@ -2,6 +2,9 @@
 const ObjectID = require("mongodb").ObjectId;
 
 const validParams = require("../helpers").validParams;
+const filterParams = require("../helpers").filterParams;
+const convertToBoolean = require("../helpers").convertToBoolean;
+const filterNullandUndefined = require("../helpers").filterNullandUndefined;
 
 module.exports = function (app, db) {
    app.route("/api/issues/:project")
@@ -87,18 +90,75 @@ module.exports = function (app, db) {
                status_text
             };
             db.insertOne(data, (err, result) => {
-               if (err) console.log(err);
-               const { project, ...returnData } = data;
-               res.json(returnData);
+               if (err) {
+                  res.json({ error: err });
+               } else {
+                  const { project, ...returnData } = data;
+                  res.json(returnData);
+               }
             });
          }
       })
 
       .put(function (req, res) {
-         let project = req.params.project;
+         const { project } = req.param;
+         const params = filterParams(req.body);
+         const {
+            _id,
+            issue_title,
+            issue_text,
+            created_by,
+            assigned_to,
+            open,
+            status_text
+         } = req.body;
+         if (!_id) {
+            res.json({ error: "missing _id" });
+         }
+
+         const date = new Date();
+
+         const data = {
+            issue_title,
+            issue_text,
+            updated_on: date,
+            created_by,
+            assigned_to,
+            open: convertToBoolean(open),
+            status_text
+         };
+
+         db.findOneAndUpdate(
+            { _id: ObjectID(_id) },
+            { $set: filterNullandUndefined(data) },
+            { $upsert: false },
+            (error, data) => {
+               if (error) {
+                  res.json({ error });
+               } else if (data.value === null) {
+                  res.json({ error: "could not update", _id });
+               } else {
+                  res.json({ result: "successfully updated", _id });
+               }
+            }
+         );
       })
 
       .delete(function (req, res) {
-         let project = req.params.project;
+         const { project } = req.params;
+         const { _id } = req.body;
+         if (_id && ObjectID.isValid(_id)) {
+            db.findOneAndDelete({ _id: ObjectID(_id) }, (error, data) => {
+               if (error) {
+                  res.json({ error });
+               } else if (data.value === null) {
+                  res.json({ error: "could not delete", _id });
+               } else {
+                  res.json({ result: "successfully deleted", _id });
+               }
+            });
+         } else {
+            res.json({ error: "could not delete", _id });
+         }
       });
 };
