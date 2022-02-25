@@ -125,7 +125,7 @@ module.exports = function (app, db) {
          if (!_id) {
             res.json({ error: "missing _id" });
          } else if (Object.keys(filterEmptyStrings(params)).length <= 1) {
-            res.json({ error: "no update field(s) sent" });
+            res.json({ error: "no update field(s) sent", _id });
          } else {
             const date = new Date();
 
