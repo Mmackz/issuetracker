@@ -1,6 +1,6 @@
 exports.validParams = [
    "_id",
-   "issue_text",
+   "issue_title",
    "issue_text",
    "created_by",
    "assigned_to",
