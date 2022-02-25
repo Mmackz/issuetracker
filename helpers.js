@@ -33,10 +33,14 @@ exports.filterEmptyStrings = function (obj) {
    return Object.fromEntries(Object.entries(obj).filter((arr) => arr[1] !== ""));
 };
 
-exports.convertToBoolean = function (string) {
-   if (string === "false") {
+exports.convertToBoolean = function (input) {
+   if (Array.isArray(input)) {
+      return input.map((b) => module.exports.convertToBoolean(b)).filter((b) => b !== null);
+   }
+
+   if (input === "false") {
       return false;
-   } else if (string === "true") {
+   } else if (input === "true") {
       return true;
    }
    return null;

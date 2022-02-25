@@ -14,6 +14,12 @@ module.exports = function (app, db) {
 
       .get(function (req, res) {
          const { project } = req.params;
+
+         // if open param is given, convert to boolean
+         if (req.query.open) {
+            req.query.open = convertToBoolean(req.query.open)
+         }
+
          const queries = Object.entries(req.query);
 
          // remove duplicate params and empty values
