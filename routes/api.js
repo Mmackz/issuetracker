@@ -71,7 +71,14 @@ module.exports = function (app, db) {
 
       .post(function (req, res, next) {
          const { project } = req.params;
-         const { issue_title, issue_text, created_by, assigned_to, status_text } = req.body;
+         // set default values as empty string for optional params
+         const {
+            issue_title,
+            issue_text,
+            created_by = "",
+            assigned_to = "",
+            status_text = ""
+         } = req.body;
 
          // check all required fields have been entered
          if ([issue_text, issue_title, created_by].some((val) => !val)) {
@@ -89,6 +96,7 @@ module.exports = function (app, db) {
                open: true,
                status_text
             };
+
             db.insertOne(data, (err, result) => {
                if (err) {
                   res.json({ error: err });
@@ -114,34 +122,34 @@ module.exports = function (app, db) {
          } = req.body;
          if (!_id) {
             res.json({ error: "missing _id" });
-         }
+         } else {
+            const date = new Date();
 
-         const date = new Date();
+            const data = {
+               issue_title,
+               issue_text,
+               updated_on: date,
+               created_by,
+               assigned_to,
+               open: convertToBoolean(open),
+               status_text
+            };
 
-         const data = {
-            issue_title,
-            issue_text,
-            updated_on: date,
-            created_by,
-            assigned_to,
-            open: convertToBoolean(open),
-            status_text
-         };
-
-         db.findOneAndUpdate(
-            { _id: ObjectID(_id) },
-            { $set: filterNullandUndefined(data) },
-            { $upsert: false },
-            (error, data) => {
-               if (error) {
-                  res.json({ error });
-               } else if (data.value === null) {
-                  res.json({ error: "could not update", _id });
-               } else {
-                  res.json({ result: "successfully updated", _id });
+            db.findOneAndUpdate(
+               { _id: ObjectID(_id) },
+               { $set: filterNullandUndefined(data) },
+               { $upsert: false },
+               (error, data) => {
+                  if (error) {
+                     res.json({ error });
+                  } else if (data.value === null) {
+                     res.json({ error: "could not update", _id });
+                  } else {
+                     res.json({ result: "successfully updated", _id });
+                  }
                }
-            }
-         );
+            );
+         }
       })
 
       .delete(function (req, res) {
