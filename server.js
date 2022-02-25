@@ -9,7 +9,7 @@ const apiRoutes = require("./routes/api.js");
 const fccTestingRoutes = require("./routes/fcctesting.js");
 const runner = require("./test-runner");
 
-let app = express();
+const app = express();
 
 app.use("/public", express.static(path.join(__dirname, "/public")));
 
