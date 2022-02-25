@@ -158,7 +158,7 @@ module.exports = function (app, db) {
 
       .delete(function (req, res) {
          const { _id } = req.body;
-         if (_id) {
+         if (!_id) {
             res.json({ error: "missing _id" });
          } else if (!ObjectID.isValid(_id)) {
             res.json({ error: "could not delete", _id });
