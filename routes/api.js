@@ -1,10 +1,13 @@
 "use strict";
 const ObjectID = require("mongodb").ObjectId;
 
-const validParams = require("../helpers").validParams;
-const filterParams = require("../helpers").filterParams;
-const convertToBoolean = require("../helpers").convertToBoolean;
-const filterNullandUndefined = require("../helpers").filterNullandUndefined;
+const {
+   validParams,
+   filterParams,
+   convertToBoolean,
+   filterNullandUndefined,
+   filterEmptyStrings
+} = require("../helpers");
 
 module.exports = function (app, db) {
    app.route("/api/issues/:project")
@@ -109,7 +112,6 @@ module.exports = function (app, db) {
       })
 
       .put(function (req, res) {
-         const { project } = req.param;
          const params = filterParams(req.body);
          const {
             _id,
@@ -119,9 +121,11 @@ module.exports = function (app, db) {
             assigned_to,
             open,
             status_text
-         } = req.body;
+         } = params;
          if (!_id) {
             res.json({ error: "missing _id" });
+         } else if (Object.keys(filterEmptyStrings(params)).length <= 1) {
+            res.json({ error: "no update field(s) sent" });
          } else {
             const date = new Date();
 
@@ -153,9 +157,12 @@ module.exports = function (app, db) {
       })
 
       .delete(function (req, res) {
-         const { project } = req.params;
          const { _id } = req.body;
-         if (_id && ObjectID.isValid(_id)) {
+         if (_id) {
+            res.json({ error: "missing _id" });
+         } else if (!ObjectID.isValid(_id)) {
+            res.json({ error: "could not delete", _id });
+         } else {
             db.findOneAndDelete({ _id: ObjectID(_id) }, (error, data) => {
                if (error) {
                   res.json({ error });
@@ -165,8 +172,6 @@ module.exports = function (app, db) {
                   res.json({ result: "successfully deleted", _id });
                }
             });
-         } else {
-            res.json({ error: "could not delete", _id });
          }
       });
 };

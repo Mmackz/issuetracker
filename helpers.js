@@ -12,20 +12,25 @@ exports.validParams = [
 
 exports.filterParams = function (params) {
    return Object.fromEntries(
-      Object.entries(params).map((p) => {
-         if (Array.isArray(p[1])) {
-            return [p[0], p[1][0]];
-         }
-         return p;
-      })
+      Object.entries(params)
+         .map((p) => {
+            if (Array.isArray(p[1])) {
+               return [p[0], p[1][0]];
+            }
+            return p;
+         })
+         .filter((p) => module.exports.validParams.includes(p[0]))
    );
 };
 
 exports.filterNullandUndefined = function (obj) {
-   const entries = Object.entries(obj).filter(
-      (arr) => arr[1] !== null && arr[1] !== undefined
+   return Object.fromEntries(
+      Object.entries(obj).filter((arr) => arr[1] !== null && arr[1] !== undefined)
    );
-   return Object.fromEntries(entries);
+};
+
+exports.filterEmptyStrings = function (obj) {
+   return Object.fromEntries(Object.entries(obj).filter((arr) => arr[1] !== ""));
 };
 
 exports.convertToBoolean = function (string) {
