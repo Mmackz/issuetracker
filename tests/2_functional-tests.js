@@ -3,7 +3,7 @@ const chai = require("chai");
 const assert = chai.assert;
 const expect = chai.expect;
 const server = require("../server");
-const { before } = require("mocha");
+const { before, after } = require("mocha");
 
 chai.use(chaiHttp);
 
@@ -258,7 +258,7 @@ suite("Functional Tests", function () {
          chai
             .request(server)
             .put("/api/issues/tests")
-            .send({ _id: "invalidID" })
+            .send({ _id: "invalidID", open: "false" })
             .end(function (err, res) {
                expect(err).to.be.null;
                expect(res).to.have.status(200);
@@ -270,6 +270,17 @@ suite("Functional Tests", function () {
                   "could not update",
                   "error message shown for invalid id"
                );
+               done();
+            });
+      });
+
+      after("Deletes db entry after tests", function (done) {
+         chai
+            .request(server)
+            .delete("/api/issues/tests")
+            .send({ _id: id })
+            .end(function (err, res) {
+               console.log(res.body);
                done();
             });
       });
