@@ -8,84 +8,84 @@ const { before, after } = require("mocha");
 chai.use(chaiHttp);
 
 suite("Functional Tests", function () {
-   // suite("POST requests to /api/issues/{project}", function () {
-   //    test("Create an issue with every field", function (done) {
-   //       chai
-   //          .request(server)
-   //          .post("/api/issues/tests")
-   //          .send({
-   //             issue_title: "POST test",
-   //             issue_text: "POST test text",
-   //             created_by: "testing suite",
-   //             assigned_to: "Mark",
-   //             status_text: "Testing in progress.."
-   //          })
-   //          .end(function (err, res) {
-   //             expect(err).to.be.null;
-   //             expect(res).to.have.status(200);
-   //             assert.isObject(res.body);
-   //             assert.exists(res.body._id);
-   //             assert.equal(res.body.issue_title, "POST test");
-   //             assert.equal(res.body.issue_text, "POST test text");
-   //             assert.equal(res.body.created_by, "testing suite");
-   //             assert.equal(res.body.assigned_to, "Mark");
-   //             assert.equal(res.body.status_text, "Testing in progress..");
-   //             assert.approximately(Date.parse(res.body.created_on), Date.now(), 500);
-   //             assert.approximately(Date.parse(res.body.updated_on), Date.now(), 500);
-   //             assert.isBoolean(res.body.open);
-   //             assert.isTrue(res.body.open);
-   //             done();
-   //          });
-   //    });
+   suite("POST requests to /api/issues/{project}", function () {
+      test("Create an issue with every field", function (done) {
+         chai
+            .request(server)
+            .post("/api/issues/tests")
+            .send({
+               issue_title: "POST test",
+               issue_text: "POST test text",
+               created_by: "testing suite",
+               assigned_to: "Mark",
+               status_text: "Testing in progress.."
+            })
+            .end(function (err, res) {
+               expect(err).to.be.null;
+               expect(res).to.have.status(200);
+               assert.isObject(res.body);
+               assert.exists(res.body._id);
+               assert.equal(res.body.issue_title, "POST test");
+               assert.equal(res.body.issue_text, "POST test text");
+               assert.equal(res.body.created_by, "testing suite");
+               assert.equal(res.body.assigned_to, "Mark");
+               assert.equal(res.body.status_text, "Testing in progress..");
+               assert.approximately(Date.parse(res.body.created_on), Date.now(), 500);
+               assert.approximately(Date.parse(res.body.updated_on), Date.now(), 500);
+               assert.isBoolean(res.body.open);
+               assert.isTrue(res.body.open);
+               done();
+            });
+      });
 
-   //    test("Create an issue with only required fields", function (done) {
-   //       chai
-   //          .request(server)
-   //          .post("/api/issues/tests")
-   //          .send({
-   //             issue_title: "POST test 2",
-   //             issue_text: "required fields only",
-   //             created_by: "testing suite"
-   //          })
-   //          .end(function (err, res) {
-   //             expect(err).to.be.null;
-   //             expect(res).to.have.status(200);
-   //             assert.isObject(res.body);
-   //             assert.exists(res.body._id);
-   //             assert.equal(res.body.issue_title, "POST test 2");
-   //             assert.equal(res.body.issue_text, "required fields only");
-   //             assert.equal(res.body.created_by, "testing suite");
-   //             assert.equal(res.body.assigned_to, "");
-   //             assert.equal(res.body.status_text, "");
-   //             assert.approximately(Date.parse(res.body.created_on), Date.now(), 500);
-   //             assert.approximately(Date.parse(res.body.updated_on), Date.now(), 500);
-   //             assert.isBoolean(res.body.open);
-   //             assert.isTrue(res.body.open);
-   //             done();
-   //          });
-   //    });
+      test("Create an issue with only required fields", function (done) {
+         chai
+            .request(server)
+            .post("/api/issues/tests")
+            .send({
+               issue_title: "POST test 2",
+               issue_text: "required fields only",
+               created_by: "testing suite"
+            })
+            .end(function (err, res) {
+               expect(err).to.be.null;
+               expect(res).to.have.status(200);
+               assert.isObject(res.body);
+               assert.exists(res.body._id);
+               assert.equal(res.body.issue_title, "POST test 2");
+               assert.equal(res.body.issue_text, "required fields only");
+               assert.equal(res.body.created_by, "testing suite");
+               assert.equal(res.body.assigned_to, "");
+               assert.equal(res.body.status_text, "");
+               assert.approximately(Date.parse(res.body.created_on), Date.now(), 500);
+               assert.approximately(Date.parse(res.body.updated_on), Date.now(), 500);
+               assert.isBoolean(res.body.open);
+               assert.isTrue(res.body.open);
+               done();
+            });
+      });
 
-   //    test("Create an issue with missing required fields", function (done) {
-   //       chai
-   //          .request(server)
-   //          .post("/api/issues/tests")
-   //          .send({
-   //             issue_title: "POST test 3",
-   //             issue_text: "required field missing",
-   //             created_by: "",
-   //             assigned_to: "Mary"
-   //          })
-   //          .end(function (err, res) {
-   //             expect(err).to.be.null;
-   //             expect(res).to.have.status(200);
-   //             assert.notExists(res.body._id);
-   //             assert.isObject(res.body);
-   //             assert.property(res.body, "error");
-   //             assert.equal(res.body.error, "required field(s) missing");
-   //             done();
-   //          });
-   //    });
-   // });
+      test("Create an issue with missing required fields", function (done) {
+         chai
+            .request(server)
+            .post("/api/issues/tests")
+            .send({
+               issue_title: "POST test 3",
+               issue_text: "required field missing",
+               created_by: "",
+               assigned_to: "Mary"
+            })
+            .end(function (err, res) {
+               expect(err).to.be.null;
+               expect(res).to.have.status(200);
+               assert.notExists(res.body._id);
+               assert.isObject(res.body);
+               assert.property(res.body, "error");
+               assert.equal(res.body.error, "required field(s) missing");
+               done();
+            });
+      });
+   });
 
    suite("GET requests to /api/issues/{project}", function () {
       test("View issues on a project (no filter)", function (done) {
@@ -173,7 +173,7 @@ suite("Functional Tests", function () {
                expect(err).to.be.null;
                expect(res).to.have.status(200);
                assert.notExists(res.body.error, "error should not exist");
-               assert.equal(res.body._id, id, `id ${id} should match _id`);
+               assert.equal(res.body._id, id, `id:${id} should match _id:${res.body._id}`);
                assert.exists(res.body.result, "result parameter exists");
                assert.equal(
                   res.body.result,
@@ -199,7 +199,7 @@ suite("Functional Tests", function () {
                expect(res).to.have.status(200);
                assert.notExists(res.body.error, "error should not exist");
                assert.exists(res.body._id, "_id should exist");
-               assert.equal(res.body._id, id, `id ${id} should match _id`);
+               assert.equal(res.body._id, id, `id:${id} should match _id:${res.body._id}`);
                assert.exists(res.body.result, "result parameter exists");
                assert.equal(
                   res.body.result,
@@ -244,7 +244,7 @@ suite("Functional Tests", function () {
                expect(res).to.have.status(200);
                assert.exists(res.body.error, "error should exist");
                assert.exists(res.body._id, "_id should exist");
-               assert.equal(res.body._id, id, `id ${id} should match _id`);
+               assert.equal(res.body._id, id, `id:${id} should match _id:${res.body._id}`);
                assert.equal(
                   res.body.error,
                   "no update field(s) sent",
@@ -280,7 +280,75 @@ suite("Functional Tests", function () {
             .delete("/api/issues/tests")
             .send({ _id: id })
             .end(function (err, res) {
-               console.log(res.body);
+               done();
+            });
+      });
+   });
+
+   suite("DELETE request to /api/issues/{project}", function () {
+      let id;
+
+      before("Make POST request to create new issue for testing", function (done) {
+         chai
+            .request(server)
+            .post("/api/issues/tests")
+            .send({
+               issue_title: "For Deletion",
+               issue_text: "will be deleted",
+               created_by: "issue_tracker",
+               status_text: "on queue for deletion"
+            })
+            .end(function (err, res) {
+               id = res.body._id;
+               done();
+            });
+      });
+
+      test("Delete an issue", function (done) {
+         chai
+            .request(server)
+            .delete("/api/issues/tests")
+            .send({ _id: id })
+            .end(function (err, res) {
+               expect(err).to.be.null;
+               expect(res).to.have.status(200);
+               assert.notExists(res.body.error, "error should not exist");
+               assert.exists(res.body._id, "_id should exist");
+               assert.equal(res.body._id, id, `id:${id} should match _id:${res.body._id}`);
+               assert.exists(res.body.result, "result should exist");
+               assert.equal(res.body.result, "successfully deleted");
+               done();
+            });
+      });
+
+      test("Delete an issue with an invalid _id", function (done) {
+         chai
+            .request(server)
+            .delete("/api/issues/tests")
+            .send({ _id: "invalidID" })
+            .end(function (err, res) {
+               expect(err).to.be.null;
+               expect(res).to.have.status(200);
+               assert.exists(res.body.error, "error should exist");
+               assert.equal(res.body.error, "could not delete");
+               assert.exists(res.body._id, "_id should exist");
+               assert.equal(res.body._id, "invalidID", `id should equal "invalidID`);
+               assert.notExists(res.body.result, "result should not exist");
+               done();
+            });
+      });
+
+      test("Delete an issue with missing _id", function (done) {
+         chai
+            .request(server)
+            .delete("/api/issues/tests")
+            .end(function (err, res) {
+               expect(err).to.be.null;
+               expect(res).to.have.status(200);
+               assert.exists(res.body.error, "error should exist");
+               assert.equal(res.body.error, "missing _id");
+               assert.notExists(res.body._id, "_id should not exist");
+               assert.notExists(res.body.result, "result should not exist");
                done();
             });
       });
