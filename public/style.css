@@ -7,6 +7,16 @@ body {
   padding: 10px;
 }
 
+main {
+   max-width: 768px;
+   padding: 0 0.75rem;
+   margin: 0 auto;
+}
+
+#testui {
+   max-width: 540px;
+}
+
 .issue {
   margin: 20px;
   padding: 5px;
