@@ -17,7 +17,7 @@ module.exports = function (app, db) {
 
          // if open param is given, convert to boolean
          if (req.query.open) {
-            req.query.open = convertToBoolean(req.query.open)
+            req.query.open = convertToBoolean(req.query.open);
          }
 
          const queries = Object.entries(req.query);
@@ -145,20 +145,25 @@ module.exports = function (app, db) {
                status_text
             };
 
-            db.findOneAndUpdate(
-               { _id: ObjectID(_id) },
-               { $set: filterNullandUndefined(data) },
-               { $upsert: false },
-               (error, data) => {
-                  if (error) {
-                     res.json({ error });
-                  } else if (data.value === null) {
-                     res.json({ error: "could not update", _id });
-                  } else {
-                     res.json({ result: "successfully updated", _id });
+            if (!ObjectID.isValid(_id)) {
+               res.json({ error: "could not update", _id });
+            } else {
+               db.findOneAndUpdate(
+                  // test for valid object id first
+                  { _id: ObjectID(_id) },
+                  { $set: filterNullandUndefined(data) },
+                  { $upsert: false },
+                  (error, data) => {
+                     if (error) {
+                        res.json({ error });
+                     } else if (data.value === null) {
+                        res.json({ error: "could not update", _id });
+                     } else {
+                        res.json({ result: "successfully updated", _id });
+                     }
                   }
-               }
-            );
+               );
+            }
          }
       })
 
